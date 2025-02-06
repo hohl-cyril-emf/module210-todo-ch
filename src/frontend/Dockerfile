@@ -1,5 +1,6 @@
 #Image de base nginx, un serveur web très utilisé
-FROM nginx:latest
+#FROM nginx:latest
+FROM public.ecr.aws/docker/library/nginx:stable-alpine3.20
 # Copie vos fichiers statiques dans le répertoire par défaut d'NGINX
 COPY . /usr/share/nginx/html
 
