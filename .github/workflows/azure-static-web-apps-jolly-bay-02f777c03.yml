@@ -59,7 +59,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v9
         with:
           urls: "https://module-210.cyrilhohl.emf-informatique.ch/"
-          uploadArtifacts: true
+          uploadArtifacts: false
           artifactName: "lighthouse-results"
           temporaryPublicStorage: true
 
