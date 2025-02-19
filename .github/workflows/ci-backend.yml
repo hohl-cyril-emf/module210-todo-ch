@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          cd src/backend docker build -t ${{ env.IMAGE_NAME }} 
+          cd src/backend && docker build -t ${{ env.IMAGE_NAME }} 
 
       - name: Tag the image
         run: |
