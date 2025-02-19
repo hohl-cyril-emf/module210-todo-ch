@@ -1,35 +1,33 @@
-name: Build and push Docker image to registry
-
+name: Build and save my Docker image to a regitry
+ 
 on:
   push:
     branches:
-      - main  # Déclenchement lorsque du code est poussé sur main
-
+      - main  # Déclenchement lorsque le code est poussé sur main
+ 
 env:
-  REG_NAME: "exo.container-registry.com"  # Nom du registre
-  IMAGE_NAME: "backend-app"  # Nom de l’image
-  REPOSITORY: "c213-emf"  # Nom du repository dans la registry
-
+  REG_NAME: "exo.container-registry.com" # Nom du registre sans "azurecr.io"
+  IMAGE_NAME: "backend-app" # Nom de votre image dans acr
+ 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+ 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Login to registry
+ 
+      - name: registryLogin
         run: |
-          docker login -u "${{ secrets.USER_NAME }}" -p "${{ secrets.PASSWORD }}" "${{ env.REG_NAME }}"
-
-      - name: Build Docker image
+           echo "${{ secrets.KEY }}" | docker login -u "${{ secrets.USERNAME }}" --password-stdin "${{ env.REG_NAME }}"
+      - name: buildImage
         run: |
-          cd src/backend && docker build -t ${{ env.IMAGE_NAME }} 
-
-      - name: Tag the image
+          cd src/backend && docker build -t ${{env.IMAGE_NAME}}:latest .
+ 
+      - name: tageLeBuild
         run: |
-          docker tag ${{ env.IMAGE_NAME }} ${{ env.REG_NAME }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
-
-      - name: Push the image to registry
+          docker tag ${{env.IMAGE_NAME}}:latest "${{env.REG_NAME}}"/c213-emf/${{env.IMAGE_NAME}}:latest
+ 
+      - name: pushImage
         run: |
-          docker push ${{ env.REG_NAME }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+          docker push "${{env.REG_NAME}}"/c213-emf/${{env.IMAGE_NAME}}:latest
