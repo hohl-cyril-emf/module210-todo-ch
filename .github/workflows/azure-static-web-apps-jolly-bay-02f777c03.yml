@@ -55,6 +55,13 @@ jobs:
           output_location: "."
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
+      - name: Analyse de performance avec Lighthouse
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: "https://module-210.cyrilhohl.emf-informatique.ch/"
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
@@ -65,3 +72,4 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
+
