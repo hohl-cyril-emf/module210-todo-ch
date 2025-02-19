@@ -60,6 +60,7 @@ jobs:
         with:
           urls: "https://module-210.cyrilhohl.emf-informatique.ch/"
           uploadArtifacts: true
+          artifactName: "lighthouse-results"
           temporaryPublicStorage: true
 
   close_pull_request_job:
