@@ -8,7 +8,6 @@ on:
 env:
   REG_NAME: "exo.container-registry.com"  # Nom du registre
   IMAGE_NAME: "backend-app"  # Nom de l’image
-  REPOSITORY: "c213-emf"  # Nom du repository dans la registry
 
 jobs:
   build-and-deploy:
@@ -21,14 +20,15 @@ jobs:
       - name: Login to registry
         run: |
           docker login -u "${{ secrets.USER_NAME }}" -p "${{ secrets.PASSWORD }}" "${{ env.REG_NAME }}"
-            - name: buildImage
-        run: |
-          cd src/backend && docker build -t ${{env.IMAGE_NAME}}:latest .
- 
-      - name: tageLeBuild
+
+      - name: Build Docker image
         run: |
           docker tag ${{env.IMAGE_NAME}}:latest "${{env.REG_NAME}}"/c213-emf/${{env.IMAGE_NAME}}:latest
- 
-      - name: pushImage
+
+      - name: Tag the image
         run: |
-          docker push "${{env.REG_NAME}}"/c213-emf/${{env.IMAGE_NAME}}:latest
+          docker tag ${{ env.IMAGE_NAME }} ${{ env.REG_NAME }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Push the image to registry
+        run: |
+          docker push ${{ env.REG_NAME }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
