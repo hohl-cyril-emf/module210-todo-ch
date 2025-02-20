@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker tag ${{env.IMAGE_NAME}}:latest "${{env.REG_NAME}}"/c213-emf/${{env.IMAGE_NAME}}:latest
+          cd src/backend && docker build -t ${{env.IMAGE_NAME}}:latest .
 
       - name: Tag the image
         run: |
